@@ -3,7 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>易师 - 易经学习工具</title>
+    <title>易师 - 六爻占卜算卦、梅花易数、六十四卦查询、黄道吉日</title>
+    <meta name="description" content="易师提供在线六爻占卜、六爻算卦、梅花易数、画符起卦、六十四卦查询、卦辞爻辞学习、风水罗盘与黄道吉日查询等易经工具。">
+    <meta name="keywords" content="六爻占卜,六爻算卦,梅花易数,六十四卦查询,黄道吉日,易经占卜,易经算卦,画符起卦,卦辞爻辞,风水罗盘">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="易师">
+    <meta name="theme-color" content="#667eea">
+    <link rel="canonical" href="https://6yao.cn/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="易师">
+    <meta property="og:title" content="易师 - 六爻占卜算卦、梅花易数、六十四卦查询、黄道吉日">
+    <meta property="og:description" content="在线使用六爻占卜、六爻算卦、梅花易数、画符起卦、六十四卦查询与黄道吉日查询等易经工具。">
+    <meta property="og:url" content="https://6yao.cn/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="易师 - 六爻占卜算卦、梅花易数、六十四卦查询">
+    <meta name="twitter:description" content="在线六爻占卜、梅花易数、六十四卦查询、黄道吉日查询与易经学习工具。">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "易师",
+            "url": "https://6yao.cn/",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "zh-CN",
+            "description": "易师是一个在线易经工具网站，提供六爻占卜、六爻算卦、梅花易数、画符起卦、六十四卦查询、卦辞爻辞学习、风水罗盘和黄道吉日查询。",
+            "keywords": [
+                "六爻占卜",
+                "六爻算卦",
+                "梅花易数",
+                "六十四卦查询",
+                "黄道吉日",
+                "易经占卜",
+                "易经算卦",
+                "画符起卦"
+            ],
+            "featureList": [
+                "六爻占卜与六爻算卦",
+                "梅花易数起卦",
+                "画符起卦",
+                "六十四卦查询",
+                "卦辞爻辞学习",
+                "黄道吉日查询",
+                "风水罗盘"
+            ],
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "CNY"
+            }
+        }
+    </script>
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="liuyao.css">
@@ -243,7 +294,7 @@
         <header>
             <button class="home-settings-btn" type="button" onclick="openHomeSettings()" aria-label="首页功能设置" title="首页功能设置">⚙</button>
             <h1>☯ 易师 ☯</h1>
-            <p>易经学习与练习工具</p>
+            <p>在线六爻占卜算卦、梅花易数、六十四卦查询与黄道吉日工具</p>
         </header>
 
         <div id="homeSettingsModal" class="home-settings-modal" onclick="handleHomeSettingsBackdrop(event)">
@@ -270,15 +321,15 @@
         <div id="homeModule" class="module-grid">
             <div class="module-card" data-home-module="meihua" onclick="showModule('meihua')">
                 <h2>🌸 梅花易数</h2>
-                <p>以数起卦，万物皆可占</p>
+                <p>在线梅花易数起卦，以时间与数字辅助易经占卜</p>
             </div>
             <div class="module-card" data-home-module="huafu" onclick="showModule('huafu')">
                 <h2>🖌️ 画符起卦</h2>
-                <p>以符入卦，心诚则灵</p>
+                <p>通过画符轨迹起卦，查看本卦、动爻与卦象详情</p>
             </div>
             <div class="module-card" data-home-module="liuyao" onclick="showModule('liuyao')">
                 <h2>🪙 六爻起卦</h2>
-                <p>传统金钱起卦法，投掷六次铜钱得卦</p>
+                <p>传统金钱起卦法，在线六爻占卜、六爻算卦并查看变爻</p>
             </div>
             <div class="module-card" data-home-module="guaxiang" onclick="showModule('guaxiang')">
                 <h2>📊 卦象练习</h2>
@@ -294,7 +345,7 @@
             </div>
             <div class="module-card" data-home-module="chaxun" onclick="showModule('chaxun')">
                 <h2>📚 六十四卦查询</h2>
-                <p>自由选择八卦组成六十四卦，查看卦象、卦辞、爻辞及变卦</p>
+                <p>自由选择八卦组成六十四卦，查询卦象、卦辞、爻辞及变卦</p>
             </div>
             <div class="module-card" data-home-module="fengshuiCompass" onclick="showModule('fengshuiCompass')">
                 <h2>🧭 风水罗盘</h2>
@@ -302,7 +353,7 @@
             </div>
             <div class="module-card" data-home-module="huangdao" onclick="showModule('huangdao')">
                 <h2>📅 黄道吉日</h2>
-                <p>按日期范围、宜忌事项与类型筛选本地推算的吉日</p>
+                <p>按日期范围、宜忌事项与类型查询黄道吉日和今日吉时</p>
             </div>
         </div>
 
