@@ -18,14 +18,12 @@ function initChaXun() {
     const allButtons = document.querySelectorAll('#cxUpperBagua .bagua-btn, #cxLowerBagua .bagua-btn')
     allButtons.forEach(btn => btn.classList.remove('selected'))
 
-    const backToYiceBtn = document.getElementById('cxBackToYiceBtn')
     const backToPrevBtn = document.getElementById('cxBackToPrevBtn')
     const backToRootBtn = document.getElementById('cxBackToRootBtn')
     const backToHomeBtn = document.getElementById('cxBackToHomeBtn')
     const backToLiuYaoBtn = document.getElementById('cxBackToLiuYaoBtn')
     const backToMeihuaBtn = document.getElementById('cxBackToMeihuaBtn')
     const backToHuafuBtn = document.getElementById('cxBackToHuafuBtn')
-    if (backToYiceBtn) backToYiceBtn.style.display = 'none'
     if (backToLiuYaoBtn) backToLiuYaoBtn.style.display = 'none'
     if (backToMeihuaBtn) backToMeihuaBtn.style.display = 'none'
     if (backToHuafuBtn) backToHuafuBtn.style.display = 'none'
@@ -1251,11 +1249,9 @@ function showGuaDetail(gua, isRootGua = false) {
     cxCurrentGua = gua
     bindCxInterpretationModalEvents()
 
-    const fromYice = window.fromYiceDetail
     const fromLiuYao = window.fromLiuYaoDetail
     const fromMeihua = window.fromMeihuaDetail
     const fromHuafu = window.fromHuafuDetail
-    const yiceDongyao = window.yiceDongyao ? [...window.yiceDongyao] : []
 
     if (!isRootGua) {
         cxChangedYaoci = []
@@ -1267,15 +1263,6 @@ function showGuaDetail(gua, isRootGua = false) {
         cxRootGua = gua
     }
 
-    if (fromYice && isRootGua && yiceDongyao.length > 0) {
-        cxChangedYaoci = yiceDongyao
-    }
-
-    if (fromYice && isRootGua && typeof setCxNajiaSelectedDate === 'function') {
-        setCxNajiaSelectedDate(new Date(window.yiceMeasureTime))
-    }
-
-    const backToYiceBtn = document.getElementById('cxBackToYiceBtn')
     const backToPrevBtn = document.getElementById('cxBackToPrevBtn')
     const backToRootBtn = document.getElementById('cxBackToRootBtn')
     const backToHomeBtn = document.getElementById('cxBackToHomeBtn')
@@ -1287,31 +1274,22 @@ function showGuaDetail(gua, isRootGua = false) {
     if (backToMeihuaBtn) backToMeihuaBtn.style.display = 'none'
     if (backToHuafuBtn) backToHuafuBtn.style.display = 'none'
 
-    if (fromYice && isRootGua) {
-        if (backToYiceBtn) backToYiceBtn.style.display = 'inline-block'
-        if (backToPrevBtn) backToPrevBtn.style.display = 'none'
-        if (backToRootBtn) backToRootBtn.style.display = 'none'
-        if (backToHomeBtn) backToHomeBtn.style.display = 'none'
-    } else if (fromLiuYao && isRootGua) {
-        if (backToYiceBtn) backToYiceBtn.style.display = 'none'
+    if (fromLiuYao && isRootGua) {
         if (backToLiuYaoBtn) backToLiuYaoBtn.style.display = 'inline-block'
         if (backToPrevBtn) backToPrevBtn.style.display = 'none'
         if (backToRootBtn) backToRootBtn.style.display = 'none'
         if (backToHomeBtn) backToHomeBtn.style.display = 'none'
     } else if (fromMeihua && isRootGua) {
-        if (backToYiceBtn) backToYiceBtn.style.display = 'none'
         if (backToMeihuaBtn) backToMeihuaBtn.style.display = 'inline-block'
         if (backToPrevBtn) backToPrevBtn.style.display = 'none'
         if (backToRootBtn) backToRootBtn.style.display = 'none'
         if (backToHomeBtn) backToHomeBtn.style.display = 'none'
     } else if (fromHuafu && isRootGua) {
-        if (backToYiceBtn) backToYiceBtn.style.display = 'none'
         if (backToHuafuBtn) backToHuafuBtn.style.display = 'inline-block'
         if (backToPrevBtn) backToPrevBtn.style.display = 'none'
         if (backToRootBtn) backToRootBtn.style.display = 'none'
         if (backToHomeBtn) backToHomeBtn.style.display = 'none'
     } else {
-        if (backToYiceBtn) backToYiceBtn.style.display = 'none'
         if (backToPrevBtn) backToPrevBtn.style.display = 'inline-block'
         if (backToHomeBtn) backToHomeBtn.style.display = 'inline-block'
         if (backToRootBtn) {
@@ -1565,17 +1543,28 @@ function backToBaguaSelect() {
 
     document.querySelectorAll('#cxUpperBagua .bagua-btn, #cxLowerBagua .bagua-btn').forEach(btn => btn.classList.remove('selected'))
 
-    window.fromYiceDetail = false
-    window.yiceDongyao = null
-    window.yiceMeasureTime = null
-    window.yiceRecordId = null
-
-    const backToYiceBtn = document.getElementById('cxBackToYiceBtn')
-    if (backToYiceBtn) backToYiceBtn.style.display = 'none'
 }
 
 function backToRootGua() {
     if (cxRootGua) {
         showGuaDetail(cxRootGua, true)
     }
+}
+
+function backToLiuYaoFromCx() {
+    const backToLiuYaoBtn = document.getElementById('cxBackToLiuYaoBtn')
+    if (backToLiuYaoBtn) backToLiuYaoBtn.style.display = 'none'
+    showModule('liuyao')
+}
+
+function backToMeihuaFromCx() {
+    const backToMeihuaBtn = document.getElementById('cxBackToMeihuaBtn')
+    if (backToMeihuaBtn) backToMeihuaBtn.style.display = 'none'
+    showModule('meihua')
+}
+
+function backToHuafuFromCx() {
+    const backToHuafuBtn = document.getElementById('cxBackToHuafuBtn')
+    if (backToHuafuBtn) backToHuafuBtn.style.display = 'none'
+    showModule('huafu')
 }

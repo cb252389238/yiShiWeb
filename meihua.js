@@ -70,7 +70,6 @@ function initMeihua() {
         btn.textContent = '☯ 起 卦 ☯'
     }
 
-    document.getElementById('mhInlineYice').style.display = 'none'
 }
 
 function createMiniGuaSymbolHtml(upper, lower) {
@@ -361,74 +360,4 @@ function showMeihuaDetail() {
     showModule('chaxun')
     showGuaDetail(mhCurrentGua, true)
     toggleYaociChange(mhCurrentDongyao)
-}
-
-function addMeihuaToYice() {
-    if (!mhCurrentGua) {
-        showAppToast('请先起卦')
-        return
-    }
-
-    document.getElementById('mhResultModal').style.display = 'none'
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, '0')
-    const day = String(now.getDate()).padStart(2, '0')
-    const hour = String(now.getHours()).padStart(2, '0')
-    const minute = String(now.getMinutes()).padStart(2, '0')
-    document.getElementById('mhYiceTime').value = `${year}-${month}-${day}T${hour}:${minute}`
-
-    document.getElementById('mhYiceCategory').value = ''
-    document.getElementById('mhYiceContent').value = ''
-    document.getElementById('mhYicePerson').value = ''
-    document.getElementById('mhYiceAnalysis').value = ''
-    document.getElementById('mhYiceAccuracy').value = 70
-    document.getElementById('mhYiceAccuracyVal').textContent = '70%'
-
-    loadCategoriesToSelect('mhYiceCategory')
-    appendInlineGuaDisplay('mhYiceGuaDisplay', mhCurrentGua, [mhCurrentDongyao])
-
-    document.getElementById('mhInlineYice').style.display = 'block'
-    document.getElementById('mhInlineYice').scrollIntoView({ behavior: 'smooth' })
-}
-
-async function saveMeihuaInlineYice() {
-    await runYiceAction('saveMeihuaInlineYice', async () => {
-        if (!mhCurrentGua) {
-            showAppToast('请先起卦')
-            return
-        }
-
-        const record = normalizeYiceRecord({
-            id: Date.now().toString(),
-            category: document.getElementById('mhYiceCategory').value,
-            content: document.getElementById('mhYiceContent').value,
-            person: document.getElementById('mhYicePerson').value,
-            upper: mhCurrentGua.upper,
-            lower: mhCurrentGua.lower,
-            dongyao: [mhCurrentDongyao],
-            analysis: document.getElementById('mhYiceAnalysis').value,
-            createTime: document.getElementById('mhYiceTime').value,
-            updateTime: new Date().toISOString(),
-            accuracy: (() => {
-                const accuracy = parseInt(document.getElementById('mhYiceAccuracy').value, 10)
-                return Number.isNaN(accuracy) ? 70 : accuracy
-            })(),
-            replays: []
-        })
-
-        await queueYiceWrite(async () => {
-            await loadYiceData()
-            await insertYiceRecordToDB(record)
-            ycRecords.unshift(record)
-        })
-
-        showAppToast('保存成功')
-        cancelMeihuaInlineYice()
-    })
-}
-
-function cancelMeihuaInlineYice() {
-    document.getElementById('mhInlineYice').style.display = 'none'
-    resetMeihuaState()
 }

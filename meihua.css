@@ -232,15 +232,6 @@
     background: #5568d3;
 }
 
-.mh-yice-btn {
-    background: #34c759;
-    color: white;
-}
-
-.mh-yice-btn:hover {
-    background: #2db84d;
-}
-
 .mh-flyout {
     position: fixed;
     z-index: 999;

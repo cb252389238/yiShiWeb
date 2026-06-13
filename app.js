@@ -280,20 +280,6 @@ function resetHomeSettingsDraft() {
 // ==================== 应用逻辑 ====================
 
 // 六十四卦查询模块变量
-// 易策模块变量
-// 易策模块数据库变量已在上方声明，此处不再重复声明
-// yiceDB 用于 IndexedDB 数据库实例
-// let ycCurrentPage = 1;
-// let ycPageSize = 10;
-let ycTotalCount = 0;
-// let ycRecords = [];
-// let ycCategories = [];
-let ycEditingId = null;
-// let ycCurrentRecord = null;
-let ycSelectedGua = { upper: null, lower: null, name: null, changeYao: 0 };
-let ycUpperBagua = null;
-let ycLowerBagua = null;
-
 const cxCharacterOriginMap = {
     '乾': {
         origin: '甲骨文与金文中的“乾”多与日光高悬、上举之势相关，后来借作八卦之首，象天体运行不息。',
@@ -4408,24 +4394,10 @@ function showModule(moduleName) {
         document.getElementById('yaociModule').classList.add('active');
         initYaoCi();
     } else if (moduleName === 'chaxun') {
-        // 获取跳转状态（在initChaXun之前）
-        const fromYice = window.fromYiceDetail === true;
-        
         document.getElementById('chaxunModule').classList.add('active');
         
         // 始终调用initChaXun重置查询模块
         initChaXun();
-        
-        // 如果是从易策跳转过来的，需要重新显示详情
-        if (fromYice) {
-            // 保持当前状态（卦象详情已显示）
-            document.getElementById('cxBaguaSelect').style.display = 'none';
-            document.getElementById('cxGuaDetail').style.display = 'block';
-            // 不重置fromYiceDetail，让showGuaDetail使用
-        } else {
-            // 正常重置
-            window.fromYiceDetail = false;
-        }
     } else if (moduleName === 'liuyao') {
         document.getElementById('liuyaoModule').classList.add('active');
         if (window.fromLiuYaoDetail) {
@@ -4436,9 +4408,6 @@ function showModule(moduleName) {
         } else {
             initLiuYao();
         }
-    } else if (moduleName === 'yice') {
-        document.getElementById('yiceModule').classList.add('active');
-        initYice();
     } else if (moduleName === 'meihua') {
         document.getElementById('meihuaModule').classList.add('active');
         if (window.fromMeihuaDetail) {
@@ -4462,46 +4431,4 @@ function showModule(moduleName) {
         initHuangdao();
     }
 }
-
-async function saveLiuYaoInlineYice() {
-    await runYiceAction('saveLiuYaoInlineYice', async () => {
-        if (!window.lyCurrentGua) {
-            showAppToast('请先起卦')
-            return
-        }
-
-        const gua = window.lyCurrentGua
-        const record = normalizeYiceRecord({
-            id: Date.now().toString(),
-            category: document.getElementById('lyYiceCategory').value,
-            content: document.getElementById('lyYiceContent').value,
-            person: document.getElementById('lyYicePerson').value,
-            upper: gua.upper,
-            lower: gua.lower,
-            dongyao: [...(window._lyInlineDongyao || [])],
-            analysis: document.getElementById('lyYiceAnalysis').value,
-            createTime: document.getElementById('lyYiceTime').value,
-            updateTime: new Date().toISOString(),
-            accuracy: (() => {
-                const accuracy = parseInt(document.getElementById('lyYiceAccuracy').value, 10)
-                return Number.isNaN(accuracy) ? 70 : accuracy
-            })(),
-            replays: []
-        })
-
-        await queueYiceWrite(async () => {
-            await loadYiceData()
-            await insertYiceRecordToDB(record)
-            ycRecords.unshift(record)
-        })
-
-        showAppToast('保存成功')
-        cancelLiuYaoInlineYice()
-    })
-}
-
-function cancelLiuYaoInlineYice() {
-    document.getElementById('lyInlineYice').style.display = 'none'
-}
-
 

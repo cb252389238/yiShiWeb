@@ -34,8 +34,6 @@ function initHuafu() {
     hfCanvas.addEventListener('pointerup', hfOnPointerUp)
     hfCanvas.addEventListener('pointerleave', hfOnPointerUp)
 
-    document.getElementById('hfInlineYice').style.display = 'none'
-
     const btn = document.getElementById('hfQiGuaBtn')
     if (btn) {
         btn.disabled = false
@@ -258,73 +256,4 @@ function showHuafuDetail() {
     showModule('chaxun')
     showGuaDetail(hfCurrentGua, true)
     toggleYaociChange(hfCurrentDongyao)
-}
-
-function addHuafuToYice() {
-    if (!hfCurrentGua) {
-        showAppToast('请先起卦')
-        return
-    }
-
-    document.getElementById('hfResultModal').style.display = 'none'
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, '0')
-    const day = String(now.getDate()).padStart(2, '0')
-    const hour = String(now.getHours()).padStart(2, '0')
-    const minute = String(now.getMinutes()).padStart(2, '0')
-    document.getElementById('hfYiceTime').value = `${year}-${month}-${day}T${hour}:${minute}`
-
-    document.getElementById('hfYiceCategory').value = ''
-    document.getElementById('hfYiceContent').value = ''
-    document.getElementById('hfYicePerson').value = ''
-    document.getElementById('hfYiceAnalysis').value = ''
-    document.getElementById('hfYiceAccuracy').value = 70
-    document.getElementById('hfYiceAccuracyVal').textContent = '70%'
-
-    loadCategoriesToSelect('hfYiceCategory')
-    appendInlineGuaDisplay('hfYiceGuaDisplay', hfCurrentGua, [hfCurrentDongyao])
-
-    document.getElementById('hfInlineYice').style.display = 'block'
-    document.getElementById('hfInlineYice').scrollIntoView({ behavior: 'smooth' })
-}
-
-async function saveHuafuInlineYice() {
-    await runYiceAction('saveHuafuInlineYice', async () => {
-        if (!hfCurrentGua) {
-            showAppToast('请先起卦')
-            return
-        }
-
-        const record = normalizeYiceRecord({
-            id: Date.now().toString(),
-            category: document.getElementById('hfYiceCategory').value,
-            content: document.getElementById('hfYiceContent').value,
-            person: document.getElementById('hfYicePerson').value,
-            upper: hfCurrentGua.upper,
-            lower: hfCurrentGua.lower,
-            dongyao: [hfCurrentDongyao],
-            analysis: document.getElementById('hfYiceAnalysis').value,
-            createTime: document.getElementById('hfYiceTime').value,
-            updateTime: new Date().toISOString(),
-            accuracy: (() => {
-                const accuracy = parseInt(document.getElementById('hfYiceAccuracy').value, 10)
-                return Number.isNaN(accuracy) ? 70 : accuracy
-            })(),
-            replays: []
-        })
-
-        await queueYiceWrite(async () => {
-            await loadYiceData()
-            await insertYiceRecordToDB(record)
-            ycRecords.unshift(record)
-        })
-
-        showAppToast('保存成功')
-        cancelHuafuInlineYice()
-    })
-}
-
-function cancelHuafuInlineYice() {
-    document.getElementById('hfInlineYice').style.display = 'none'
 }

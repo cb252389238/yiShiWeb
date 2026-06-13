@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="liuyao.css">
-    <link rel="stylesheet" href="yice.css">
     <link rel="stylesheet" href="meihua.css">
     <link rel="stylesheet" href="huafu.css">
     <link rel="stylesheet" href="fengshui-compass.css">
@@ -297,10 +296,6 @@
                 <h2>📚 六十四卦查询</h2>
                 <p>自由选择八卦组成六十四卦，查看卦象、卦辞、爻辞及变卦</p>
             </div>
-            <div class="module-card" data-home-module="yice" onclick="showModule('yice')">
-                <h2>🎯 易策</h2>
-                <p>记录占卜卦象，追踪预测结果，记录复盘总结</p>
-            </div>
             <div class="module-card" data-home-module="fengshuiCompass" onclick="showModule('fengshuiCompass')">
                 <h2>🧭 风水罗盘</h2>
                 <p>实时读取手机方位，查看八方、八卦与二十四山</p>
@@ -386,48 +381,6 @@
                     <button class="next-btn" onclick="resetLiuYao()" style="margin-left: 10px;">重新起卦</button>
                 </div>
             </div>
-
-            <!-- 六爻起卦-内联新增易策记录 -->
-            <div id="lyInlineYice" style="display: none; margin-top: 30px; border-top: 2px solid #667eea; padding-top: 20px;">
-                <h3 style="text-align: center; color: #667eea; margin-bottom: 20px;">📝 新增卦象记录</h3>
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算时间：</label>
-                        <input type="datetime-local" id="lyYiceTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">分类：</label>
-                        <select id="lyYiceCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                            <option value="">请选择分类</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">准确度：<span id="lyYiceAccuracyVal" style="color: #3498db; font-weight: bold;">70%</span></label>
-                        <input type="range" id="lyYiceAccuracy" min="0" max="100" step="5" value="70"
-                               oninput="document.getElementById('lyYiceAccuracyVal').textContent = this.value + '%';">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算内容：</label>
-                        <textarea id="lyYiceContent" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算人：</label>
-                        <input type="text" id="lyYicePerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">卦象：</label>
-                        <div id="lyYiceGuaDisplay" style="background: #f9f9f9; padding: 15px; border-radius: 10px; text-align: center;"></div>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">解卦（您的分析思路）：</label>
-                        <textarea id="lyYiceAnalysis" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
-                        <button class="option-btn" onclick="saveLiuYaoInlineYice()" style="background: #34c759; color: white;">保存记录</button>
-                        <button class="option-btn" onclick="cancelLiuYaoInlineYice()">取消</button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- 梅花易数模块 -->
@@ -445,48 +398,6 @@
             <div style="text-align: center; margin-top: 20px;">
                 <button id="mhQiGuaBtn" class="mh-qigua-btn" onclick="startMeihuaDivination()">☯ 起 卦 ☯</button>
             </div>
-
-            <!-- 梅花易数-内联新增易策记录 -->
-            <div id="mhInlineYice" style="display: none; margin-top: 30px; border-top: 2px solid #667eea; padding-top: 20px;">
-                <h3 style="text-align: center; color: #667eea; margin-bottom: 20px;">📝 新增卦象记录</h3>
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算时间：</label>
-                        <input type="datetime-local" id="mhYiceTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">分类：</label>
-                        <select id="mhYiceCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                            <option value="">请选择分类</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">准确度：<span id="mhYiceAccuracyVal" style="color: #3498db; font-weight: bold;">70%</span></label>
-                        <input type="range" id="mhYiceAccuracy" min="0" max="100" step="5" value="70"
-                               oninput="document.getElementById('mhYiceAccuracyVal').textContent = this.value + '%';">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算内容：</label>
-                        <textarea id="mhYiceContent" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算人：</label>
-                        <input type="text" id="mhYicePerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">卦象：</label>
-                        <div id="mhYiceGuaDisplay" style="background: #f9f9f9; padding: 15px; border-radius: 10px; text-align: center;"></div>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">解卦（您的分析思路）：</label>
-                        <textarea id="mhYiceAnalysis" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
-                        <button class="option-btn" onclick="saveMeihuaInlineYice()" style="background: #34c759; color: white;">保存记录</button>
-                        <button class="option-btn" onclick="cancelMeihuaInlineYice()">取消</button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- 梅花易数结果弹层 -->
@@ -499,7 +410,6 @@
                 <div class="mh-result-buttons">
                     <button class="mh-result-btn" onclick="closeMeihuaResult()">关闭</button>
                     <button class="mh-result-btn mh-detail-btn" onclick="showMeihuaDetail()">卦象详情</button>
-                    <button class="mh-result-btn mh-yice-btn" onclick="addMeihuaToYice()">添加到易策</button>
                 </div>
             </div>
         </div>
@@ -528,48 +438,6 @@
             <div style="text-align: center; margin-top: 20px;">
                 <button id="hfQiGuaBtn" class="mh-qigua-btn" onclick="hfStartDivination()">🖌️ 确定起卦</button>
             </div>
-
-            <!-- 画符起卦-内联新增易策记录 -->
-            <div id="hfInlineYice" style="display: none; margin-top: 30px; border-top: 2px solid #667eea; padding-top: 20px;">
-                <h3 style="text-align: center; color: #667eea; margin-bottom: 20px;">📝 新增卦象记录</h3>
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算时间：</label>
-                        <input type="datetime-local" id="hfYiceTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">分类：</label>
-                        <select id="hfYiceCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                            <option value="">请选择分类</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">准确度：<span id="hfYiceAccuracyVal" style="color: #3498db; font-weight: bold;">70%</span></label>
-                        <input type="range" id="hfYiceAccuracy" min="0" max="100" step="5" value="70"
-                               oninput="document.getElementById('hfYiceAccuracyVal').textContent = this.value + '%';">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算内容：</label>
-                        <textarea id="hfYiceContent" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算人：</label>
-                        <input type="text" id="hfYicePerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">卦象：</label>
-                        <div id="hfYiceGuaDisplay" style="background: #f9f9f9; padding: 15px; border-radius: 10px; text-align: center;"></div>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">解卦（您的分析思路）：</label>
-                        <textarea id="hfYiceAnalysis" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
-                        <button class="option-btn" onclick="saveHuafuInlineYice()" style="background: #34c759; color: white;">保存记录</button>
-                        <button class="option-btn" onclick="cancelHuafuInlineYice()">取消</button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- 画符起卦结果弹层 -->
@@ -582,7 +450,6 @@
                 <div class="mh-result-buttons">
                     <button class="mh-result-btn" onclick="closeHuafuResult()">关闭</button>
                     <button class="mh-result-btn mh-detail-btn" onclick="showHuafuDetail()">卦象详情</button>
-                    <button class="mh-result-btn mh-yice-btn" onclick="addHuafuToYice()">添加到易策</button>
                 </div>
             </div>
         </div>
@@ -607,7 +474,6 @@
                         <div style="margin-bottom: 15px;">
                             <button class="back-btn" onclick="backToBaguaSelect()" id="cxBackToPrevBtn">← 返回上一页</button>
                             <button class="back-btn" onclick="backToRootGua()" id="cxBackToRootBtn" style="display: none; margin-left: 10px;">← 返回本卦</button>
-                            <button class="back-btn" onclick="backToYiceDetail()" id="cxBackToYiceBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回易策详情</button>
                             <button class="back-btn" onclick="backToLiuYaoFromCx()" id="cxBackToLiuYaoBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回六爻起卦</button>
                             <button class="back-btn" onclick="backToMeihuaFromCx()" id="cxBackToMeihuaBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回梅花易数</button>
                             <button class="back-btn" onclick="backToHuafuFromCx()" id="cxBackToHuafuBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回画符起卦</button>
@@ -687,73 +553,6 @@
 
             
             <div id="cxResult"></div>
-        </div>
-
-        <!-- 易策模块 -->
-        <div id="yiceModule" class="practice-area">
-            <button class="back-btn" onclick="showHome()">← 返回首页</button>
-            
-            <!-- 搜索栏（可折叠） -->
-            <details id="yiceSearchDetails" style="background: #f9f9f9; border-radius: 10px; margin-bottom: 20px; overflow: hidden;">
-                <summary style="padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #e8e8e8; list-style: none;">
-                    <span style="font-weight: bold; color: #667eea;">🔍 查询条件</span>
-                    <span>▼</span>
-                </summary>
-                <div style="padding: 20px;">
-                    <div style="margin-bottom: 10px;">
-                        <input type="text" id="ycSearchInput" placeholder="搜索关键词、卦象、测算人、分类..." 
-                               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <select id="ycSearchCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                            <option value="">全部分类</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <select id="ycSearchVerifyStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                            <option value="">全部状态</option>
-                            <option value="pending">待验</option>
-                            <option value="fulfilled">应验</option>
-                            <option value="wrong">失误</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <select id="ycSearchDongyaoCount" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                            <option value="">全部爻变数</option>
-                            <option value="0">无</option>
-                            <option value="1">一</option>
-                            <option value="2">二</option>
-                            <option value="3">三</option>
-                            <option value="4">四</option>
-                            <option value="5">五</option>
-                            <option value="6">六</option>
-                        </select>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px;">
-                        <input type="date" id="ycSearchStartDate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
-                        <input type="date" id="ycSearchEndDate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
-                        <button class="option-btn" onclick="searchYice()" style="background: #667eea;">搜索</button>
-                        <button class="option-btn" onclick="clearYiceSearch()" style="background: #94a3b8;">清空</button>
-                    </div>
-                </div>
-            </details>
-            
-            <!-- 占卜列表 -->
-            <div id="ycListArea" style="max-height: 60vh; overflow-y: auto;"></div>
-            
-            <!-- 悬浮操作按钮 -->
-            <div id="ycFloatingBtn" class="yc-floating-btn" onclick="toggleYcActions()">
-                <span>+</span>
-            </div>
-            <div id="ycActionMenu" class="yc-action-menu" style="display: none;">
-                <button class="yc-action-item" onclick="showAddYice()">新增卦象记录</button>
-                <button class="yc-action-item" onclick="showCategoryManage()">分类管理</button>
-                <button class="yc-action-item" onclick="document.getElementById('ycImportFileInput').click()">导入数据</button>
-                <button class="yc-action-item" onclick="backupYiceData()">备份数据</button>
-                <input type="file" id="ycImportFileInput" style="display: none;" onchange="handleYiceImport(event)">
-            </div>
         </div>
 
         <!-- 风水罗盘模块 -->
@@ -865,207 +664,6 @@
             </div>
         </div>
 
-        <!-- 新增卦象记录页面 -->
-        <div id="yiceAddModule" class="practice-area">
-            <button id="yiceAddBackBtn" class="back-btn" onclick="showYiceList()">← 返回列表</button>
-            <h2 style="text-align: center; margin-bottom: 20px;">新增卦象记录</h2>
-            
-            <div style="max-width: 800px; margin: 0 auto;">
-                <!-- 测算时间 -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算时间：</label>
-                    <input type="datetime-local" id="ycAddCreateTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                </div>
-                
-                <!-- 分类选择 -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">分类：</label>
-                    <select id="ycAddCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                        <option value="">请选择分类</option>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">状态：</label>
-                    <select id="ycAddVerifyStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                        <option value="pending">待验</option>
-                        <option value="fulfilled">应验</option>
-                        <option value="wrong">失误</option>
-                    </select>
-                </div>
-                
-                <!-- 测算内容 -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算内容：</label>
-                    <textarea id="ycAddContent" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
-                </div>
-                
-                <!-- 测算人 -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算人：</label>
-                    <input type="text" id="ycAddPerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
-                </div>
-                
-                <!-- 卦象选择 -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">卦象：</label>
-                    <div id="ycAddGuaSelect" style="background: #f9f9f9; padding: 20px; border-radius: 10px; cursor: pointer; text-align: center;" onclick="showGuaSelectModal()">
-                        <span id="ycSelectedGuaText" style="font-size: 1.2em; color: #666;">点击选择卦象</span>
-                        <div id="ycSelectedGuaDisplay" style="display: none; margin-top: 15px;"></div>
-                    </div>
-                </div>
-                
-                <!-- 动爻选择 -->
-                <div id="ycDongyaoSelect" style="margin-bottom: 20px; display: none;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">动爻（变爻）：</label>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="ycDongyaoButtons"></div>
-                </div>
-                
-                <!-- 解卦 -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">解卦（您的分析思路）：</label>
-                    <textarea id="ycAddAnalysis" rows="6" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
-                </div>
-                
-                <!-- 保存按钮 -->
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="option-btn" onclick="saveYiceRecord()">保存记录</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 卦象选择弹框 -->
-        <div id="ycGuaModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
-            <div style="background: white; max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px; max-height: 80vh; overflow-y: auto;">
-                <h3 style="text-align: center; margin-bottom: 20px;">选择卦象</h3>
-                
-                <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 10px;">上卦：</h4>
-                    <div class="bagua-options" id="ycUpperBagua"></div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 10px;">下卦：</h4>
-                    <div class="bagua-options" id="ycLowerBagua"></div>
-                </div>
-
-                <div id="ycGuaResult" style="text-align: center; margin: 20px 0;"></div>
-                
-                <div style="text-align: center;">
-                    <button class="option-btn" onclick="closeGuaModal()">取消</button>
-                    <button class="option-btn" id="ycConfirmGuaBtn" onclick="confirmGuaSelection()" style="display: none;">确定</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 分类管理页面 -->
-        <div id="yiceCategoryModule" class="practice-area">
-            <button class="back-btn" onclick="showYiceList()">← 返回列表</button>
-            <h2 style="text-align: center; margin-bottom: 20px;">分类管理</h2>
-            
-            <!-- 新增分类 -->
-            <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="text" id="ycNewCategory" placeholder="新分类名称" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                    <button class="option-btn" onclick="addCategory()">添加</button>
-                </div>
-            </div>
-            
-            <!-- 分类列表 -->
-            <div id="ycCategoryList"></div>
-        </div>
-
-        <!-- 卦象详情页面 -->
-        <div id="yiceDetailModule" class="practice-area">
-            <button class="back-btn" onclick="showYiceList()">← 返回列表</button>
-            
-            <div id="ycDetailContent" style="max-width: 800px; margin: 0 auto;"></div>
-            
-            <!-- 详情悬浮按钮 -->
-            <div id="ycDetailFloatingBtn" class="yc-floating-btn" onclick="toggleYcDetailActions()">
-                <span>✎</span>
-            </div>
-            <div id="ycDetailActionMenu" class="yc-action-menu" style="display: none;">
-                <button class="yc-action-item" onclick="editYiceRecord()">编辑</button>
-                <button class="yc-action-item" onclick="showReplayForm()">复盘</button>
-            </div>
-        </div>
-
-        <!-- 编辑卦象记录页面 -->
-        <div id="yiceEditModule" class="practice-area">
-            <button class="back-btn" onclick="showYiceDetail()">← 返回详情</button>
-            <h2 style="text-align: center; margin-bottom: 20px;">编辑卦象记录</h2>
-            
-            <div style="max-width: 800px; margin: 0 auto;">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">分类：</label>
-                    <select id="ycEditCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;"></select>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">状态：</label>
-                    <select id="ycEditVerifyStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                        <option value="pending">待验</option>
-                        <option value="fulfilled">应验</option>
-                        <option value="wrong">失误</option>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算内容：</label>
-                    <textarea id="ycEditContent" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;"></textarea>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算人：</label>
-                    <input type="text" id="ycEditPerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">卦象：</label>
-                    <div id="ycEditGuaSelect" style="background: #f9f9f9; padding: 20px; border-radius: 10px; cursor: pointer; text-align: center;" onclick="showEditGuaSelectModal()">
-                        <span id="ycEditGuaText" style="font-size: 1.2em; color: #666;"></span>
-                        <div id="ycEditGuaDisplay" style="display: none; margin-top: 15px;"></div>
-                    </div>
-                </div>
-                
-                <div id="ycEditDongyaoSelect" style="margin-bottom: 20px; display: none;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">动爻（变爻）：</label>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="ycEditDongyaoButtons"></div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">解卦（您的分析思路）：</label>
-                    <textarea id="ycEditAnalysis" rows="6" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;"></textarea>
-                </div>
-                
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="option-btn" onclick="updateYiceRecord()">保存修改</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 复盘弹框 -->
-        <div id="ycReplayModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
-            <div style="background: white; max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px;">
-                <h3 style="text-align: center; margin-bottom: 20px;">添加复盘记录</h3>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">事情进展：</label>
-                    <textarea id="ycReplayContent" rows="6" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请记录事情的实际发展情况..."></textarea>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">与预测的差异：</label>
-                    <textarea id="ycReplayDiff" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请记录实际情况与当初预测的差异..."></textarea>
-                </div>
-                
-                <div style="text-align: center;">
-                    <button class="option-btn" onclick="closeReplayModal()">取消</button>
-                    <button class="option-btn" onclick="saveReplay()">保存复盘</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <aside id="cxToolSidebar" class="cx-tool-sidebar cx-tool-dock-left" aria-label="辅助工具栏">
@@ -1118,9 +716,6 @@
     <script src="huafu.js"></script>
     <script src="fengshui-compass.js"></script>
     <script src="huangdao.js"></script>
-    <script src="yice-state.js"></script>
-    <script src="yice-db.js"></script>
-    <script src="yice-ui.js"></script>
 
 </body>
 </html>
