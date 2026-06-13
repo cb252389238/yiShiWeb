@@ -292,10 +292,22 @@
 <body>
     <div class="container">
         <header>
+            <button class="contact-btn" type="button" onclick="openContactModal()" aria-label="联系我" title="联系我">✉</button>
             <button class="home-settings-btn" type="button" onclick="openHomeSettings()" aria-label="首页功能设置" title="首页功能设置">⚙</button>
             <h1>☯ 易师 ☯</h1>
             <p>在线六爻占卜算卦、梅花易数、六十四卦查询与黄道吉日工具</p>
         </header>
+
+        <div id="contactModal" class="contact-modal" onclick="handleContactBackdrop(event)">
+            <div class="contact-panel" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+                <button class="contact-close" type="button" onclick="closeContactModal()" aria-label="关闭联系弹窗">×</button>
+                <h2 id="contactTitle">联系我</h2>
+                <p>扫码添加微信，或搜索微信号联系。</p>
+                <img class="contact-qrcode" src="image/wx.jpg" alt="微信二维码">
+                <div class="contact-wechat">微信：<strong>beiyizimu6789</strong></div>
+                <div class="contact-wechat">邮箱：<strong>201258308@qq.com</strong></div>
+            </div>
+        </div>
 
         <div id="homeSettingsModal" class="home-settings-modal" onclick="handleHomeSettingsBackdrop(event)">
             <div class="home-settings-panel" role="dialog" aria-modal="true" aria-labelledby="homeSettingsTitle">

@@ -78,6 +78,20 @@ function initHomeModuleSettings() {
     applyHomeModuleSettings()
 }
 
+function openContactModal() {
+    document.getElementById('contactModal').classList.add('active')
+}
+
+function closeContactModal() {
+    document.getElementById('contactModal').classList.remove('active')
+}
+
+function handleContactBackdrop(event) {
+    if (event.target.id === 'contactModal') {
+        closeContactModal()
+    }
+}
+
 function openHomeSettings() {
     renderHomeSettingsList(loadHomeModuleSettings())
     document.getElementById('homeSettingsModal').classList.add('active')
