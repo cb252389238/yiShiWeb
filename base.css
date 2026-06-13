@@ -1,0 +1,599 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    position: relative;
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.home-settings-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
+    background: rgba(255,255,255,0.16);
+    color: white;
+    cursor: pointer;
+    font-size: 1.35em;
+    line-height: 1;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.16);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.home-settings-btn:hover {
+    background: rgba(255,255,255,0.28);
+    transform: rotate(24deg) scale(1.04);
+}
+
+.home-settings-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(18, 24, 52, 0.58);
+}
+
+.home-settings-modal.active {
+    display: flex;
+}
+
+.home-settings-panel {
+    width: min(620px, 100%);
+    max-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+}
+
+.home-settings-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid #edf0f7;
+    background: linear-gradient(180deg, #f8f9ff 0%, #fff 100%);
+}
+
+.home-settings-header h2 {
+    color: #2f365f;
+    margin-bottom: 6px;
+    font-size: 1.35em;
+}
+
+.home-settings-header p {
+    color: #667085;
+    line-height: 1.6;
+}
+
+.home-settings-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: #eef1ff;
+    color: #5568d3;
+    cursor: pointer;
+    font-size: 1.4em;
+    flex-shrink: 0;
+}
+
+.home-settings-list {
+    display: grid;
+    gap: 10px;
+    padding: 18px 20px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.home-settings-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid #e5e8f2;
+    border-radius: 14px;
+    background: #fbfcff;
+    cursor: grab;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.22s ease, background 0.2s ease;
+    touch-action: none;
+}
+
+.home-settings-item.dragging {
+    opacity: 0.92;
+    border-color: #667eea;
+    background: #eef1ff;
+    box-shadow: 0 16px 36px rgba(102,126,234,0.34);
+    transform: scale(1.035);
+    cursor: grabbing;
+    pointer-events: none;
+    z-index: 2;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.home-settings-item.sort-animating {
+    transition: transform 0.22s ease;
+}
+
+.home-settings-placeholder {
+    border: 2px dashed rgba(102,126,234,0.45);
+    border-radius: 14px;
+    background: rgba(102,126,234,0.08);
+    transition: transform 0.22s ease, height 0.18s ease;
+}
+
+.home-settings-drag {
+    color: #9aa3b8;
+    font-size: 1.2em;
+    user-select: none;
+}
+
+.home-settings-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+.home-settings-name input {
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+}
+
+.home-settings-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px 20px;
+    border-top: 1px solid #edf0f7;
+}
+
+.home-settings-action-group {
+    display: flex;
+    gap: 10px;
+}
+
+.home-settings-actions button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.home-settings-reset,
+.home-settings-cancel {
+    background: #f2f4f8;
+    color: #475467;
+}
+
+.home-settings-save {
+    background: #667eea;
+    color: white;
+}
+
+header h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.module-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.module-card h2 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.module-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .home-settings-btn {
+        top: -4px;
+        right: 0;
+        width: 40px;
+        height: 40px;
+    }
+
+    .home-settings-modal {
+        padding: 12px;
+    }
+
+    .home-settings-header,
+    .home-settings-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .home-settings-actions {
+        flex-direction: column;
+    }
+
+    .home-settings-action-group {
+        justify-content: flex-end;
+    }
+}
+
+.practice-area {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: none;
+}
+
+.practice-area.active {
+    display: block;
+}
+
+.back-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 1em;
+}
+
+.back-btn:hover {
+    background: #5568d3;
+}
+
+.gua-image {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.gua-symbol {
+    font-size: 5em;
+    color: #333;
+    margin: 0;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.option-btn {
+    background: #f0f0f0;
+    border: 2px solid #ddd;
+    padding: 15px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: all 0.3s;
+}
+
+.option-btn.selected {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+
+.option-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.option-btn.correct {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+.option-btn.wrong {
+    background: #f44336;
+    color: white;
+    border-color: #f44336;
+}
+
+.bagua-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.bagua-btn {
+    background: #f0f0f0;
+    border: 2px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.bagua-btn svg {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+.bagua-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.bagua-btn.selected {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.result-area {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 1.3em;
+}
+
+.result-area.correct {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.result-area.wrong {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.next-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+.next-btn:hover {
+    background: #45a049;
+}
+
+.progress-info {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.2em;
+    color: #667eea;
+}
+
+.gua-name-display {
+    text-align: center;
+    font-size: 2em;
+    margin: 20px 0;
+    color: #333;
+}
+
+.selected-bagua {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.5em;
+}
+
+.yaoci-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.yaoci-option {
+    background: #f0f0f0;
+    border: 2px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.yaoci-option:hover {
+    background: #667eea;
+    color: white;
+}
+
+.score-display {
+    text-align: center;
+    font-size: 1.5em;
+    color: #667eea;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.related-gua-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 116px));
+    justify-content: center;
+    gap: 8px;
+    margin: 14px 0 18px;
+}
+
+.related-gua-actions .option-btn {
+    width: 100%;
+    min-height: 34px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.88em;
+    box-shadow: 0 6px 14px rgba(31, 41, 55, 0.12);
+}
+
+.related-gua-actions #cxChangeGuaBtn {
+    background: #ef4444;
+}
+
+.related-gua-actions #cxHuguaBtn {
+    background: #3b82f6;
+}
+
+.related-gua-actions #cxZongguaBtn {
+    background: #8b5cf6;
+}
+
+.related-gua-actions #cxCuoguaBtn {
+    background: #f59e0b;
+}
+
+.related-gua-actions .option-btn:disabled,
+.related-gua-actions .option-btn.disabled {
+    background: #e6e8ef;
+    border-color: #d0d5dd;
+    color: #98a2b3;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.related-gua-actions .option-btn:disabled:hover,
+.related-gua-actions .option-btn.disabled:hover {
+    background: #e6e8ef;
+    border-color: #d0d5dd;
+    color: #98a2b3;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    header p {
+        font-size: 1em;
+    }
+
+    .module-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .module-card {
+        padding: 20px;
+    }
+
+    .practice-area {
+        padding: 20px;
+    }
+
+    .gua-symbol {
+        font-size: 2rem;
+    }
+
+    .bagua-options {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .bagua-btn {
+        padding: 15px 10px;
+        font-size: 1.2em;
+    }
+
+    .bagua-btn div:first-child {
+        font-size: 1.8em;
+    }
+
+    .bagua-btn div:last-child {
+        font-size: 0.6em;
+        margin-top: 3px;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .option-btn {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+
+    .gua-name-display {
+        font-size: 1.5em;
+    }
+
+    .result-area {
+        font-size: 1.1em;
+    }
+
+    .next-btn {
+        padding: 12px 30px;
+        font-size: 1.1em;
+    }
+
+    .back-btn {
+        padding: 8px 16px;
+        font-size: 0.9em;
+    }
+}

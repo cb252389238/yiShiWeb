@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易师 - 易经学习工具</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="liuyao.css">
+    <link rel="stylesheet" href="yice.css">
+    <link rel="stylesheet" href="meihua.css">
+    <link rel="stylesheet" href="huafu.css">
+    <link rel="stylesheet" href="fengshui-compass.css">
+    <link rel="stylesheet" href="huangdao.css">
+    <style>
+        .cx-section-header {
+            position: relative;
+            margin-bottom: 10px;
+            padding-right: 60px;
+        }
+
+        .cx-section-header h3 {
+            margin: 0;
+            color: #667eea;
+        }
+
+        .cx-gua-name-row {
+            position: relative;
+            display: inline-block;
+            padding-right: 30px;
+            text-align: center;
+        }
+
+        .cx-interpret-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            border: 1px solid #8fa2ff;
+            border-radius: 999px;
+            background: #eef1ff;
+            color: #4d63d6;
+            font-size: 0.75em;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .cx-gua-name-interpret-btn,
+        .cx-corner-interpret-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .cx-gua-name-interpret-btn {
+            min-width: 0;
+            padding: 0 4px;
+            border-radius: 10px;
+            font-size: 0.6em;
+            line-height: 1.35;
+            transform: translate(2px, -22%);
+        }
+
+        .cx-interpret-btn:hover {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .cx-yaoci-header {
+            position: relative;
+            padding-right: 60px;
+            margin-bottom: 8px;
+        }
+
+        .cx-yaoci-header-main {
+            min-height: 24px;
+        }
+
+        .cx-interpretation-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.6);
+            z-index: 2200;
+            padding: 24px;
+        }
+
+        .cx-interpretation-panel {
+            width: min(860px, 100%);
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            background: #fffdf8;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 60px rgba(15, 23, 42, 0.25);
+        }
+
+        .cx-interpretation-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 24px 18px;
+            border-bottom: 1px solid #ece6d8;
+            background: linear-gradient(180deg, #fff8e8 0%, #fffdf8 100%);
+        }
+
+        .cx-interpretation-title {
+            font-size: 1.35em;
+            font-weight: bold;
+            color: #2f365f;
+            margin-bottom: 6px;
+        }
+
+        .cx-interpretation-subtitle {
+            color: #8b6f3d;
+            font-size: 0.95em;
+        }
+
+        .cx-interpretation-close {
+            border: none;
+            background: transparent;
+            color: #7a6a52;
+            cursor: pointer;
+            font-size: 1.5em;
+            line-height: 1;
+            padding: 2px 4px;
+        }
+
+        .cx-interpretation-content {
+            padding: 24px;
+            overflow-y: auto;
+            display: grid;
+            gap: 16px;
+        }
+
+        .cx-interpretation-section {
+            background: #fff;
+            border: 1px solid #efe6d2;
+            border-radius: 14px;
+            padding: 16px 18px;
+        }
+
+        .cx-interpretation-section h4 {
+            margin: 0 0 10px;
+            color: #6a56c8;
+            font-size: 1em;
+        }
+
+        .cx-interpretation-original {
+            background: #fff6df;
+            border-color: #f1ddae;
+        }
+
+        .cx-interpretation-original p {
+            font-size: 1.08em;
+            line-height: 1.85;
+            color: #5b4426;
+        }
+
+        .cx-interpretation-plain {
+            background: #f5f8ff;
+            border-color: #dce5ff;
+        }
+
+        .cx-interpretation-misunderstanding {
+            background: #fff7f1;
+            border-color: #f1dbc8;
+        }
+
+        .cx-interpretation-detail-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .cx-interpretation-detail-item {
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: #faf8f2;
+            border: 1px solid #eee3cc;
+        }
+
+        .cx-interpretation-detail-term {
+            font-weight: bold;
+            color: #5a4a2f;
+            margin-bottom: 4px;
+        }
+
+        .cx-interpretation-detail-desc {
+            color: #333;
+            line-height: 1.75;
+        }
+
+        .cx-interpretation-section p,
+        .cx-interpretation-section li {
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .cx-interpretation-section p + p,
+        .cx-interpretation-section li + li {
+            margin-top: 8px;
+        }
+
+        .cx-interpretation-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .cx-section-header,
+            .cx-yaoci-header,
+            .cx-interpretation-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .cx-interpretation-modal {
+                padding: 12px;
+            }
+
+            .cx-interpretation-panel {
+                max-height: 88vh;
+            }
+
+            .cx-interpretation-header,
+            .cx-interpretation-content {
+                padding: 18px;
+            }
+
+            .cx-interpretation-close {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="home-settings-btn" type="button" onclick="openHomeSettings()" aria-label="首页功能设置" title="首页功能设置">⚙</button>
+            <h1>☯ 易师 ☯</h1>
+            <p>易经学习与练习工具</p>
+        </header>
+
+        <div id="homeSettingsModal" class="home-settings-modal" onclick="handleHomeSettingsBackdrop(event)">
+            <div class="home-settings-panel" role="dialog" aria-modal="true" aria-labelledby="homeSettingsTitle">
+                <div class="home-settings-header">
+                    <div>
+                        <h2 id="homeSettingsTitle">首页功能设置</h2>
+                        <p>拖动调整顺序，勾选控制首页是否显示。</p>
+                    </div>
+                    <button class="home-settings-close" type="button" onclick="closeHomeSettings()" aria-label="关闭设置">×</button>
+                </div>
+                <div id="homeSettingsList" class="home-settings-list"></div>
+                <div class="home-settings-actions">
+                    <button class="home-settings-reset" type="button" onclick="resetHomeSettingsDraft()">恢复默认</button>
+                    <div class="home-settings-action-group">
+                        <button class="home-settings-cancel" type="button" onclick="closeHomeSettings()">取消</button>
+                        <button class="home-settings-save" type="button" onclick="saveHomeSettings()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 首页模块选择 -->
+        <div id="homeModule" class="module-grid">
+            <div class="module-card" data-home-module="meihua" onclick="showModule('meihua')">
+                <h2>🌸 梅花易数</h2>
+                <p>以数起卦，万物皆可占</p>
+            </div>
+            <div class="module-card" data-home-module="huafu" onclick="showModule('huafu')">
+                <h2>🖌️ 画符起卦</h2>
+                <p>以符入卦，心诚则灵</p>
+            </div>
+            <div class="module-card" data-home-module="liuyao" onclick="showModule('liuyao')">
+                <h2>🪙 六爻起卦</h2>
+                <p>传统金钱起卦法，投掷六次铜钱得卦</p>
+            </div>
+            <div class="module-card" data-home-module="guaxiang" onclick="showModule('guaxiang')">
+                <h2>📊 卦象练习</h2>
+                <p>随机显示卦象图，从三个选项中选择正确的卦名</p>
+            </div>
+            <div class="module-card" data-home-module="guaming" onclick="showModule('guaming')">
+                <h2>📝 卦名记忆</h2>
+                <p>根据部分卦名，选择正确的八卦组成</p>
+            </div>
+            <div class="module-card" data-home-module="yaoci" onclick="showModule('yaoci')">
+                <h2>📖 爻辞卦辞练习</h2>
+                <p>选择正确的卦辞和爻辞，深入学习经文</p>
+            </div>
+            <div class="module-card" data-home-module="chaxun" onclick="showModule('chaxun')">
+                <h2>📚 六十四卦查询</h2>
+                <p>自由选择八卦组成六十四卦，查看卦象、卦辞、爻辞及变卦</p>
+            </div>
+            <div class="module-card" data-home-module="yice" onclick="showModule('yice')">
+                <h2>🎯 易策</h2>
+                <p>记录占卜卦象，追踪预测结果，记录复盘总结</p>
+            </div>
+            <div class="module-card" data-home-module="fengshuiCompass" onclick="showModule('fengshuiCompass')">
+                <h2>🧭 风水罗盘</h2>
+                <p>实时读取手机方位，查看八方、八卦与二十四山</p>
+            </div>
+            <div class="module-card" data-home-module="huangdao" onclick="showModule('huangdao')">
+                <h2>📅 黄道吉日</h2>
+                <p>按日期范围、宜忌事项与类型筛选本地推算的吉日</p>
+            </div>
+        </div>
+
+        <!-- 卦象练习模块 -->
+        <div id="guaxiangModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            <div class="progress-info" id="gxProgress"></div>
+            <div class="gua-image">
+                <div class="gua-symbol" id="gxSymbol"></div>
+            </div>
+            <div class="options-grid" id="gxOptions"></div>
+            <div id="gxResult"></div>
+            <button class="next-btn" onclick="nextGuaXiang()" style="display: none;" id="gxNextBtn">下一题</button>
+        </div>
+
+        <!-- 卦名记忆模块 -->
+        <div id="guamingModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            <div class="progress-info" id="gmProgress"></div>
+            <div class="gua-name-display" id="gmGuaName"></div>
+            <div class="selected-bagua" id="gmSelected"></div>
+            <div class="bagua-options" id="gmBaguaOptions"></div>
+            <div id="gmResult"></div>
+            <button class="next-btn" onclick="nextGuaMing()" style="display: none;" id="gmNextBtn">下一题</button>
+        </div>
+
+        <!-- 爻辞卦辞练习模块 -->
+        <div id="yaociModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            <div class="score-display" id="ycScore"></div>
+            <div class="gua-image">
+                <div class="gua-symbol" id="ycSymbol"></div>
+            </div>
+            <div class="gua-name-display" id="ycGuaName"></div>
+            <div class="yaoci-section" id="ycQuestion"></div>
+            <div id="ycResult"></div>
+            <button class="next-btn" onclick="nextYaoCiModule()" style="display: none;" id="ycNextBtn">继续</button>
+        </div>
+
+        <!-- 六爻起卦模块 -->
+        <div id="liuyaoModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            
+            <!-- 铜钱投掷区域 -->
+            <div id="lyTossArea">
+                <div class="progress-info" id="lyProgress">第 1 爻</div>
+                
+                <!-- 爻象展示区域 -->
+                <div id="lyYaoDisplay" class="yao-display"></div>
+                
+                <!-- 铜钱动画容器 -->
+                <div style="display: flex; justify-content: center; gap: 18px; margin: 30px 0;">
+                    <div class="ly-coin-wrapper"><img class="ly-coin" id="lyCoin1" src="image/有字面.png" alt="铜钱1"></div>
+                    <div class="ly-coin-wrapper"><img class="ly-coin" id="lyCoin2" src="image/有字面.png" alt="铜钱2"></div>
+                    <div class="ly-coin-wrapper"><img class="ly-coin" id="lyCoin3" src="image/有字面.png" alt="铜钱3"></div>
+                </div>
+                
+                <div id="lyResult" style="text-align: center; font-size: 1.5em; margin: 20px 0;"></div>
+                
+                <div id="lyButtonArea" style="text-align: center; margin-top: 20px;">
+                    <button class="option-btn" onclick="tossCoins()" id="lyTossBtn">投掷铜钱</button>
+                </div>
+                
+                <!-- 卦象结果展示区域 -->
+                <div id="lyFinalResult" style="display: none;"></div>
+            </div>
+            
+            <!-- 卦象显示区域（保留但不使用） -->
+            <div id="lyGuaDiv" style="display: none;">
+                <div class="gua-image">
+                    <div class="gua-symbol" id="lySymbol"></div>
+                </div>
+                <div class="gua-name-display" id="lyGuaName"></div>
+                <div style="text-align: center; margin: 20px 0;">
+                    <button class="next-btn" onclick="showLiuYaoDetail()">查看详情</button>
+                    <button class="next-btn" onclick="resetLiuYao()" style="margin-left: 10px;">重新起卦</button>
+                </div>
+            </div>
+
+            <!-- 六爻起卦-内联新增易策记录 -->
+            <div id="lyInlineYice" style="display: none; margin-top: 30px; border-top: 2px solid #667eea; padding-top: 20px;">
+                <h3 style="text-align: center; color: #667eea; margin-bottom: 20px;">📝 新增卦象记录</h3>
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算时间：</label>
+                        <input type="datetime-local" id="lyYiceTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">分类：</label>
+                        <select id="lyYiceCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                            <option value="">请选择分类</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">准确度：<span id="lyYiceAccuracyVal" style="color: #3498db; font-weight: bold;">70%</span></label>
+                        <input type="range" id="lyYiceAccuracy" min="0" max="100" step="5" value="70"
+                               oninput="document.getElementById('lyYiceAccuracyVal').textContent = this.value + '%';">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算内容：</label>
+                        <textarea id="lyYiceContent" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算人：</label>
+                        <input type="text" id="lyYicePerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">卦象：</label>
+                        <div id="lyYiceGuaDisplay" style="background: #f9f9f9; padding: 15px; border-radius: 10px; text-align: center;"></div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">解卦（您的分析思路）：</label>
+                        <textarea id="lyYiceAnalysis" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                        <button class="option-btn" onclick="saveLiuYaoInlineYice()" style="background: #34c759; color: white;">保存记录</button>
+                        <button class="option-btn" onclick="cancelLiuYaoInlineYice()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 梅花易数模块 -->
+        <div id="meihuaModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 5px;">🌸 梅花易数</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 15px;">以数起卦，万物皆可占</p>
+            
+            <div class="mh-gua-area">
+                <div id="mhGuaCircle" class="mh-gua-circle"></div>
+                <div class="mh-center-glow"></div>
+                <div class="mh-center-taiji">☯</div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="mhQiGuaBtn" class="mh-qigua-btn" onclick="startMeihuaDivination()">☯ 起 卦 ☯</button>
+            </div>
+
+            <!-- 梅花易数-内联新增易策记录 -->
+            <div id="mhInlineYice" style="display: none; margin-top: 30px; border-top: 2px solid #667eea; padding-top: 20px;">
+                <h3 style="text-align: center; color: #667eea; margin-bottom: 20px;">📝 新增卦象记录</h3>
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算时间：</label>
+                        <input type="datetime-local" id="mhYiceTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">分类：</label>
+                        <select id="mhYiceCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                            <option value="">请选择分类</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">准确度：<span id="mhYiceAccuracyVal" style="color: #3498db; font-weight: bold;">70%</span></label>
+                        <input type="range" id="mhYiceAccuracy" min="0" max="100" step="5" value="70"
+                               oninput="document.getElementById('mhYiceAccuracyVal').textContent = this.value + '%';">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算内容：</label>
+                        <textarea id="mhYiceContent" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算人：</label>
+                        <input type="text" id="mhYicePerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">卦象：</label>
+                        <div id="mhYiceGuaDisplay" style="background: #f9f9f9; padding: 15px; border-radius: 10px; text-align: center;"></div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">解卦（您的分析思路）：</label>
+                        <textarea id="mhYiceAnalysis" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                        <button class="option-btn" onclick="saveMeihuaInlineYice()" style="background: #34c759; color: white;">保存记录</button>
+                        <button class="option-btn" onclick="cancelMeihuaInlineYice()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 梅花易数结果弹层 -->
+        <div id="mhResultModal" class="mh-result-modal" style="display: none;">
+            <div class="mh-result-content">
+                <div class="mh-result-title">🌸 梅花易数</div>
+                <div id="mhResultSymbol" class="mh-result-symbol"></div>
+                <div id="mhResultName" class="mh-result-name"></div>
+                <div id="mhResultInfo" class="mh-result-info"></div>
+                <div class="mh-result-buttons">
+                    <button class="mh-result-btn" onclick="closeMeihuaResult()">关闭</button>
+                    <button class="mh-result-btn mh-detail-btn" onclick="showMeihuaDetail()">卦象详情</button>
+                    <button class="mh-result-btn mh-yice-btn" onclick="addMeihuaToYice()">添加到易策</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 画符起卦模块 -->
+        <div id="huafuModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 5px;">🖌️ 画符起卦</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 15px;">以符入卦，心诚则灵</p>
+            
+            <div class="hf-canvas-wrapper">
+                <canvas id="hfCanvas" class="hf-canvas"></canvas>
+                <div id="hfHint" class="hf-hint">在画布上随意书写或作画</div>
+            </div>
+            
+            <div class="hf-toolbar">
+                <div class="hf-pen-sizes">
+                    <span style="font-size: 0.9em; color: #666;">笔触：</span>
+                    <button class="hf-pen-btn hf-pen-active" data-size="2" onclick="hfSetPenSize(2, this)">细</button>
+                    <button class="hf-pen-btn" data-size="5" onclick="hfSetPenSize(5, this)">中</button>
+                    <button class="hf-pen-btn" data-size="10" onclick="hfSetPenSize(10, this)">粗</button>
+                </div>
+                <button class="hf-clear-btn" onclick="hfClearCanvas()">清除画布</button>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="hfQiGuaBtn" class="mh-qigua-btn" onclick="hfStartDivination()">🖌️ 确定起卦</button>
+            </div>
+
+            <!-- 画符起卦-内联新增易策记录 -->
+            <div id="hfInlineYice" style="display: none; margin-top: 30px; border-top: 2px solid #667eea; padding-top: 20px;">
+                <h3 style="text-align: center; color: #667eea; margin-bottom: 20px;">📝 新增卦象记录</h3>
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算时间：</label>
+                        <input type="datetime-local" id="hfYiceTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">分类：</label>
+                        <select id="hfYiceCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                            <option value="">请选择分类</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">准确度：<span id="hfYiceAccuracyVal" style="color: #3498db; font-weight: bold;">70%</span></label>
+                        <input type="range" id="hfYiceAccuracy" min="0" max="100" step="5" value="70"
+                               oninput="document.getElementById('hfYiceAccuracyVal').textContent = this.value + '%';">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算内容：</label>
+                        <textarea id="hfYiceContent" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">测算人：</label>
+                        <input type="text" id="hfYicePerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">卦象：</label>
+                        <div id="hfYiceGuaDisplay" style="background: #f9f9f9; padding: 15px; border-radius: 10px; text-align: center;"></div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 1em;">解卦（您的分析思路）：</label>
+                        <textarea id="hfYiceAnalysis" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                        <button class="option-btn" onclick="saveHuafuInlineYice()" style="background: #34c759; color: white;">保存记录</button>
+                        <button class="option-btn" onclick="cancelHuafuInlineYice()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 画符起卦结果弹层 -->
+        <div id="hfResultModal" class="mh-result-modal" style="display: none;">
+            <div class="mh-result-content">
+                <div class="mh-result-title">🖌️ 画符起卦</div>
+                <div id="hfResultSymbol" class="mh-result-symbol"></div>
+                <div id="hfResultName" class="mh-result-name"></div>
+                <div id="hfResultInfo" class="mh-result-info"></div>
+                <div class="mh-result-buttons">
+                    <button class="mh-result-btn" onclick="closeHuafuResult()">关闭</button>
+                    <button class="mh-result-btn mh-detail-btn" onclick="showHuafuDetail()">卦象详情</button>
+                    <button class="mh-result-btn mh-yice-btn" onclick="addHuafuToYice()">添加到易策</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 六十四卦查询模块 -->
+        <div id="chaxunModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()" id="cxBackToHomeBtn">← 返回首页</button>
+            
+            <!-- 八卦选择区域 -->
+            <div id="cxBaguaSelect">
+                <h3 style="text-align: center; margin-bottom: 15px;">选择上卦</h3>
+                <div class="bagua-options" id="cxUpperBagua"></div>
+                
+                <h3 style="text-align: center; margin: 20px 0 15px;">选择下卦</h3>
+                <div class="bagua-options" id="cxLowerBagua"></div>
+            </div>
+            
+            <!-- 卦象详情区域 -->
+            <div id="cxGuaDetail" style="display: none;">
+                <div class="cx-detail-layout">
+                    <div>
+                        <div style="margin-bottom: 15px;">
+                            <button class="back-btn" onclick="backToBaguaSelect()" id="cxBackToPrevBtn">← 返回上一页</button>
+                            <button class="back-btn" onclick="backToRootGua()" id="cxBackToRootBtn" style="display: none; margin-left: 10px;">← 返回本卦</button>
+                            <button class="back-btn" onclick="backToYiceDetail()" id="cxBackToYiceBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回易策详情</button>
+                            <button class="back-btn" onclick="backToLiuYaoFromCx()" id="cxBackToLiuYaoBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回六爻起卦</button>
+                            <button class="back-btn" onclick="backToMeihuaFromCx()" id="cxBackToMeihuaBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回梅花易数</button>
+                            <button class="back-btn" onclick="backToHuafuFromCx()" id="cxBackToHuafuBtn" style="display: none; margin-left: 10px; background: #667eea;">← 返回画符起卦</button>
+                        </div>
+                        
+                        <div id="cxGanzhiTime" class="cx-ganzhi-time"></div>
+                        <div id="cxWuxingState" class="cx-wuxing-state"></div>
+                        <div class="gua-image cx-najia-image">
+                            <div class="gua-symbol" id="cxSymbol"></div>
+                            <div class="cx-related-fold" id="cxRelatedFold"></div>
+                            <div class="cx-related-panel" id="cxRelatedPanel"></div>
+                        </div>
+                        <div class="gua-name-display" id="cxGuaName"></div>
+                        
+                        <!-- 变卦、互卦、综卦、错卦 -->
+                        <div class="related-gua-actions">
+                            <button class="option-btn" id="cxChangeGuaBtn" onclick="jumpToBianGua()" style="display: none;"></button>
+                            <button class="option-btn" id="cxHuguaBtn" onclick="jumpToGua('hugua')">互卦</button>
+                            <button class="option-btn" id="cxZongguaBtn" onclick="jumpToGua('zonggua')">综卦</button>
+                            <button class="option-btn" id="cxCuoguaBtn" onclick="jumpToGua('cuogua')">错卦</button>
+                        </div>
+                        
+                        <!-- 卦辞 -->
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <div class="cx-section-header">
+                                <h3>卦辞</h3>
+                                <button type="button" class="cx-interpret-btn cx-corner-interpret-btn" id="cxTuanshiInterpretBtn">解读</button>
+                            </div>
+                            <p id="cxTuanshi" style="font-size: 1.2em; line-height: 1.8;"></p>
+                        </div>
+                        
+                        <!-- 爻辞 -->
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h3 style="color: #667eea; margin-bottom: 15px;">爻辞（点击爻可标记变爻，点击汉字看字源）</h3>
+                            <div id="cxYaociList"></div>
+                        </div>
+                    </div>
+
+                    <aside id="cxCharPanel" class="cx-char-panel" aria-live="polite">
+                        <div class="cx-char-panel-header">
+                            <div class="cx-char-panel-badge cx-char-panel-glyph">字</div>
+                            <div class="cx-char-panel-title-wrap">
+                                <div class="cx-char-panel-title">点击任意汉字</div>
+                                <div class="cx-char-panel-tip">支持查看卦名、卦辞、爻辞中的单字起源、本义与意义演变。</div>
+                            </div>
+                            <button type="button" class="cx-char-panel-close" id="cxCharPanelClose" aria-label="关闭汉字释义弹窗">✕</button>
+                        </div>
+
+                        <div class="cx-char-panel-section">
+                            <h4>起源</h4>
+                            <p data-field="origin">点击左侧任意汉字后，这里会显示它在古文字或早期语境中的来源说明。</p>
+                        </div>
+                        <div class="cx-char-panel-section">
+                            <h4>最初含义</h4>
+                            <p data-field="originalMeaning">这里会展示该字较早期、更接近本义层面的解释。</p>
+                        </div>
+                        <div class="cx-char-panel-section">
+                            <h4>后续含义演变</h4>
+                            <p data-field="evolution">这里会说明该字在后世、尤其《易经》语境中的延伸含义。</p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <div id="cxInterpretationModal" class="cx-interpretation-modal" aria-hidden="true">
+                <div class="cx-interpretation-panel" role="dialog" aria-modal="true" aria-labelledby="cxInterpretationTitle">
+                    <div class="cx-interpretation-header">
+                        <div>
+                            <div class="cx-interpretation-title" id="cxInterpretationTitle" tabindex="-1">深入解读</div>
+                            <div class="cx-interpretation-subtitle" id="cxInterpretationSubtitle"></div>
+                        </div>
+                        <button type="button" class="cx-interpretation-close" id="cxInterpretationClose" aria-label="关闭解读弹层">✕</button>
+                    </div>
+                    <div class="cx-interpretation-content" id="cxInterpretationContent"></div>
+                </div>
+            </div>
+
+            
+            <div id="cxResult"></div>
+        </div>
+
+        <!-- 易策模块 -->
+        <div id="yiceModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            
+            <!-- 搜索栏（可折叠） -->
+            <details id="yiceSearchDetails" style="background: #f9f9f9; border-radius: 10px; margin-bottom: 20px; overflow: hidden;">
+                <summary style="padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #e8e8e8; list-style: none;">
+                    <span style="font-weight: bold; color: #667eea;">🔍 查询条件</span>
+                    <span>▼</span>
+                </summary>
+                <div style="padding: 20px;">
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" id="ycSearchInput" placeholder="搜索关键词、卦象、测算人、分类..." 
+                               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <select id="ycSearchCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <option value="">全部分类</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <select id="ycSearchVerifyStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <option value="">全部状态</option>
+                            <option value="pending">待验</option>
+                            <option value="fulfilled">应验</option>
+                            <option value="wrong">失误</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <select id="ycSearchDongyaoCount" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <option value="">全部爻变数</option>
+                            <option value="0">无</option>
+                            <option value="1">一</option>
+                            <option value="2">二</option>
+                            <option value="3">三</option>
+                            <option value="4">四</option>
+                            <option value="5">五</option>
+                            <option value="6">六</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px;">
+                        <input type="date" id="ycSearchStartDate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                        <input type="date" id="ycSearchEndDate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+                        <button class="option-btn" onclick="searchYice()" style="background: #667eea;">搜索</button>
+                        <button class="option-btn" onclick="clearYiceSearch()" style="background: #94a3b8;">清空</button>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- 占卜列表 -->
+            <div id="ycListArea" style="max-height: 60vh; overflow-y: auto;"></div>
+            
+            <!-- 悬浮操作按钮 -->
+            <div id="ycFloatingBtn" class="yc-floating-btn" onclick="toggleYcActions()">
+                <span>+</span>
+            </div>
+            <div id="ycActionMenu" class="yc-action-menu" style="display: none;">
+                <button class="yc-action-item" onclick="showAddYice()">新增卦象记录</button>
+                <button class="yc-action-item" onclick="showCategoryManage()">分类管理</button>
+                <button class="yc-action-item" onclick="document.getElementById('ycImportFileInput').click()">导入数据</button>
+                <button class="yc-action-item" onclick="backupYiceData()">备份数据</button>
+                <input type="file" id="ycImportFileInput" style="display: none;" onchange="handleYiceImport(event)">
+            </div>
+        </div>
+
+        <!-- 风水罗盘模块 -->
+        <div id="fengshuiCompassModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            <div class="fs-compass-page">
+                <div class="fs-compass-header">
+                    <h2>风水罗盘</h2>
+                    <p>点击开始后转动手机，罗盘会根据当前朝向显示方位、八卦与二十四山。</p>
+                </div>
+
+                <div class="fs-compass-card">
+                    <div class="fs-compass-stage">
+                        <div class="fs-compass-dial" id="fsCompassDial">
+                            <div class="fs-ring fs-ring-ticks" id="fsCompassTicks"></div>
+                            <div class="fs-ring fs-ring-degrees" id="fsCompassDegrees"></div>
+                            <div class="fs-ring fs-ring-mountains" id="fsCompassMountains"></div>
+                            <div class="fs-ring fs-ring-bagua" id="fsCompassBagua"></div>
+                            <div class="fs-ring fs-ring-directions" id="fsCompassDirections"></div>
+                            <div class="fs-compass-pointer"></div>
+                            <div class="fs-compass-center">
+                                <div class="fs-compass-degree" id="fsCompassDegree">--°</div>
+                                <div class="fs-compass-direction" id="fsCompassDirection">未启动</div>
+                                <div class="fs-compass-detail" id="fsCompassDetail">点击下方按钮开始</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fs-compass-info">
+                        <div class="fs-info-item">
+                            <span>方位</span>
+                            <strong id="fsCurrentDirection">--</strong>
+                        </div>
+                        <div class="fs-info-item">
+                            <span>八卦</span>
+                            <strong id="fsCurrentBagua">--</strong>
+                        </div>
+                        <div class="fs-info-item">
+                            <span>二十四山</span>
+                            <strong id="fsCurrentMountain">--</strong>
+                        </div>
+                    </div>
+
+                    <button type="button" class="fs-compass-start" id="fsCompassStartBtn" onclick="startFengshuiCompass()">开始使用罗盘</button>
+                    <div class="fs-compass-status" id="fsCompassStatus">需要设备方向传感器支持。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 黄道吉日模块 -->
+        <div id="huangdaoModule" class="practice-area">
+            <button class="back-btn" onclick="showHome()">← 返回首页</button>
+            <div class="hd-page">
+                <div class="hd-header">
+                    <h2>黄道吉日</h2>
+                    <p>根据日期范围、宜忌事项和类型筛选本地规则推算的黄道吉日。</p>
+                </div>
+
+                <div class="hd-filter-card">
+                    <div class="hd-form-grid">
+                        <label class="hd-field">
+                            <span>开始时间 <strong>*</strong></span>
+                            <input type="date" id="hdStartDate">
+                        </label>
+                        <label class="hd-field">
+                            <span>结束时间 <strong>*</strong></span>
+                            <input type="date" id="hdEndDate">
+                        </label>
+                        <label class="hd-field">
+                            <span>类型 <strong>*</strong></span>
+                            <select id="hdTypeSelect"></select>
+                        </label>
+                        <div class="hd-field hd-suit-field">
+                            <span>宜忌 <strong>*</strong></span>
+                            <div class="hd-radio-group">
+                                <label class="hd-radio-option">
+                                    <input type="radio" name="hdSuitType" value="yi" checked>
+                                    <span>宜</span>
+                                </label>
+                                <label class="hd-radio-option">
+                                    <input type="radio" name="hdSuitType" value="ji">
+                                    <span>忌</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hd-actions">
+                        <button type="button" class="option-btn hd-search-btn" onclick="searchHuangdaoDays()">查询吉日</button>
+                        <button type="button" class="option-btn hd-reset-btn" onclick="resetHuangdaoForm()">重置</button>
+                    </div>
+                    <p class="hd-note">黄历结果由本地规则推算，仅供参考。</p>
+                </div>
+
+                <div id="hdResultSummary" class="hd-result-summary"></div>
+                <div id="hdResultList" class="hd-result-list"></div>
+            </div>
+        </div>
+
+        <div id="hdHourModal" class="hd-hour-modal" aria-hidden="true" onclick="handleHuangdaoHourBackdrop(event)">
+            <div class="hd-hour-panel" role="dialog" aria-modal="true" aria-labelledby="hdHourTitle">
+                <div class="hd-hour-header">
+                    <div>
+                        <h3 id="hdHourTitle">今日吉时</h3>
+                        <p id="hdHourSubtitle"></p>
+                    </div>
+                    <button type="button" class="hd-hour-close" onclick="closeHuangdaoHourModal()" aria-label="关闭吉时弹窗">×</button>
+                </div>
+                <div id="hdHourList" class="hd-hour-list"></div>
+            </div>
+        </div>
+
+        <!-- 新增卦象记录页面 -->
+        <div id="yiceAddModule" class="practice-area">
+            <button id="yiceAddBackBtn" class="back-btn" onclick="showYiceList()">← 返回列表</button>
+            <h2 style="text-align: center; margin-bottom: 20px;">新增卦象记录</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <!-- 测算时间 -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算时间：</label>
+                    <input type="datetime-local" id="ycAddCreateTime" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                </div>
+                
+                <!-- 分类选择 -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">分类：</label>
+                    <select id="ycAddCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                        <option value="">请选择分类</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">状态：</label>
+                    <select id="ycAddVerifyStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                        <option value="pending">待验</option>
+                        <option value="fulfilled">应验</option>
+                        <option value="wrong">失误</option>
+                    </select>
+                </div>
+                
+                <!-- 测算内容 -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算内容：</label>
+                    <textarea id="ycAddContent" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算内容..."></textarea>
+                </div>
+                
+                <!-- 测算人 -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算人：</label>
+                    <input type="text" id="ycAddPerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入测算人姓名">
+                </div>
+                
+                <!-- 卦象选择 -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">卦象：</label>
+                    <div id="ycAddGuaSelect" style="background: #f9f9f9; padding: 20px; border-radius: 10px; cursor: pointer; text-align: center;" onclick="showGuaSelectModal()">
+                        <span id="ycSelectedGuaText" style="font-size: 1.2em; color: #666;">点击选择卦象</span>
+                        <div id="ycSelectedGuaDisplay" style="display: none; margin-top: 15px;"></div>
+                    </div>
+                </div>
+                
+                <!-- 动爻选择 -->
+                <div id="ycDongyaoSelect" style="margin-bottom: 20px; display: none;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">动爻（变爻）：</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="ycDongyaoButtons"></div>
+                </div>
+                
+                <!-- 解卦 -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">解卦（您的分析思路）：</label>
+                    <textarea id="ycAddAnalysis" rows="6" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请输入解卦思路..."></textarea>
+                </div>
+                
+                <!-- 保存按钮 -->
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="option-btn" onclick="saveYiceRecord()">保存记录</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卦象选择弹框 -->
+        <div id="ycGuaModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+            <div style="background: white; max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px; max-height: 80vh; overflow-y: auto;">
+                <h3 style="text-align: center; margin-bottom: 20px;">选择卦象</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">上卦：</h4>
+                    <div class="bagua-options" id="ycUpperBagua"></div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">下卦：</h4>
+                    <div class="bagua-options" id="ycLowerBagua"></div>
+                </div>
+
+                <div id="ycGuaResult" style="text-align: center; margin: 20px 0;"></div>
+                
+                <div style="text-align: center;">
+                    <button class="option-btn" onclick="closeGuaModal()">取消</button>
+                    <button class="option-btn" id="ycConfirmGuaBtn" onclick="confirmGuaSelection()" style="display: none;">确定</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分类管理页面 -->
+        <div id="yiceCategoryModule" class="practice-area">
+            <button class="back-btn" onclick="showYiceList()">← 返回列表</button>
+            <h2 style="text-align: center; margin-bottom: 20px;">分类管理</h2>
+            
+            <!-- 新增分类 -->
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="ycNewCategory" placeholder="新分类名称" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                    <button class="option-btn" onclick="addCategory()">添加</button>
+                </div>
+            </div>
+            
+            <!-- 分类列表 -->
+            <div id="ycCategoryList"></div>
+        </div>
+
+        <!-- 卦象详情页面 -->
+        <div id="yiceDetailModule" class="practice-area">
+            <button class="back-btn" onclick="showYiceList()">← 返回列表</button>
+            
+            <div id="ycDetailContent" style="max-width: 800px; margin: 0 auto;"></div>
+            
+            <!-- 详情悬浮按钮 -->
+            <div id="ycDetailFloatingBtn" class="yc-floating-btn" onclick="toggleYcDetailActions()">
+                <span>✎</span>
+            </div>
+            <div id="ycDetailActionMenu" class="yc-action-menu" style="display: none;">
+                <button class="yc-action-item" onclick="editYiceRecord()">编辑</button>
+                <button class="yc-action-item" onclick="showReplayForm()">复盘</button>
+            </div>
+        </div>
+
+        <!-- 编辑卦象记录页面 -->
+        <div id="yiceEditModule" class="practice-area">
+            <button class="back-btn" onclick="showYiceDetail()">← 返回详情</button>
+            <h2 style="text-align: center; margin-bottom: 20px;">编辑卦象记录</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">分类：</label>
+                    <select id="ycEditCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;"></select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">状态：</label>
+                    <select id="ycEditVerifyStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                        <option value="pending">待验</option>
+                        <option value="fulfilled">应验</option>
+                        <option value="wrong">失误</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算内容：</label>
+                    <textarea id="ycEditContent" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">测算人：</label>
+                    <input type="text" id="ycEditPerson" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">卦象：</label>
+                    <div id="ycEditGuaSelect" style="background: #f9f9f9; padding: 20px; border-radius: 10px; cursor: pointer; text-align: center;" onclick="showEditGuaSelectModal()">
+                        <span id="ycEditGuaText" style="font-size: 1.2em; color: #666;"></span>
+                        <div id="ycEditGuaDisplay" style="display: none; margin-top: 15px;"></div>
+                    </div>
+                </div>
+                
+                <div id="ycEditDongyaoSelect" style="margin-bottom: 20px; display: none;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">动爻（变爻）：</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="ycEditDongyaoButtons"></div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">解卦（您的分析思路）：</label>
+                    <textarea id="ycEditAnalysis" rows="6" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;"></textarea>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="option-btn" onclick="updateYiceRecord()">保存修改</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 复盘弹框 -->
+        <div id="ycReplayModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+            <div style="background: white; max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px;">
+                <h3 style="text-align: center; margin-bottom: 20px;">添加复盘记录</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">事情进展：</label>
+                    <textarea id="ycReplayContent" rows="6" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请记录事情的实际发展情况..."></textarea>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 1.1em;">与预测的差异：</label>
+                    <textarea id="ycReplayDiff" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;" placeholder="请记录实际情况与当初预测的差异..."></textarea>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button class="option-btn" onclick="closeReplayModal()">取消</button>
+                    <button class="option-btn" onclick="saveReplay()">保存复盘</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <aside id="cxToolSidebar" class="cx-tool-sidebar cx-tool-dock-left" aria-label="辅助工具栏">
+        <button type="button" class="cx-tool-sidebar-tab" id="cxToolSidebarTab">工具</button>
+    </aside>
+
+    <div id="cxToolModal" class="cx-tool-modal" aria-hidden="true">
+        <div class="cx-tool-modal-panel" role="dialog" aria-modal="true" aria-labelledby="cxToolModalTitle">
+            <div class="cx-tool-modal-header">
+                <button type="button" class="cx-tool-modal-back" id="cxToolModalBack" onclick="backCxToolModal()" style="display: none;">‹</button>
+                <div>
+                    <div class="cx-tool-modal-title" id="cxToolModalTitle">辅助工具</div>
+                    <div class="cx-tool-modal-subtitle" id="cxToolModalSubtitle"></div>
+                </div>
+                <button type="button" class="cx-tool-modal-close" onclick="closeCxToolModal()" aria-label="关闭辅助工具">✕</button>
+            </div>
+            <div class="cx-tool-modal-content" id="cxToolModalContent"></div>
+        </div>
+    </div>
+
+    <div id="cxToolGuaModal" class="cx-tool-gua-modal" aria-hidden="true">
+        <div class="cx-tool-gua-panel" role="dialog" aria-modal="true" aria-labelledby="cxToolGuaTitle">
+            <div class="cx-tool-gua-header">
+                <div>
+                    <div class="cx-tool-gua-title" id="cxToolGuaTitle">卦象</div>
+                    <div class="cx-tool-gua-subtitle" id="cxToolGuaSubtitle"></div>
+                </div>
+                <button type="button" class="cx-tool-modal-close" onclick="closeCxToolGuaModal()" aria-label="关闭卦象内容">✕</button>
+            </div>
+            <div class="cx-tool-gua-content" id="cxToolGuaContent"></div>
+        </div>
+    </div>
+
+    <script src="yizhou-data.js"></script>
+    <script src="gua-interpretation-data.js"></script>
+    <script src="gua-interpretation-overrides.js"></script>
+    <script src="gua-tuanshi-handwritten.js"></script>
+    <script src="pinyin-data.js"></script>
+    <script src="app.js"></script>
+    <script src="ui-common.js"></script>
+    <script src="gua-common.js"></script>
+    <script src="najia.js"></script>
+    <script src="text-render.js"></script>
+    <script src="char-panel.js"></script>
+    <script src="guaxiang.js"></script>
+    <script src="practice-memory.js"></script>
+    <script src="chaxun.js"></script>
+    <script src="liuyao.js"></script>
+    <script src="meihua.js"></script>
+    <script src="huafu.js"></script>
+    <script src="fengshui-compass.js"></script>
+    <script src="huangdao.js"></script>
+    <script src="yice-state.js"></script>
+    <script src="yice-db.js"></script>
+    <script src="yice-ui.js"></script>
+
+</body>
+</html>
+
+<!-- App Style Toast 提示框 -->
+<div id="appToast" class="app-toast" style="display: none;">
+    <div class="app-toast-content" id="appToastContent"></div>
+</div>
+
