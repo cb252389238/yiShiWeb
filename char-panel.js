@@ -32,10 +32,31 @@ function buildGenericCharacterOriginInfo(char) {
 
 function getCharacterOriginInfo(char) {
     const data = cxCharacterOriginMap[char]
+    const ancientForm = typeof cxCharacterAncientFormMap !== 'undefined'
+        ? cxCharacterAncientFormMap[char]
+        : null
+
     if (data) {
-        return data
+        return {
+            ...data,
+            ...(ancientForm || {})
+        }
     }
-    return buildGenericCharacterOriginInfo(char)
+
+    return {
+        ...buildGenericCharacterOriginInfo(char),
+        ...(ancientForm || {})
+    }
+}
+
+function setOptionalCharacterPanelSection(panel, field, value) {
+    const section = panel.querySelector(`[data-section="${field}"]`)
+    const element = panel.querySelector(`[data-field="${field}"]`)
+    if (!section || !element) return
+
+    const text = String(value || '').trim()
+    section.hidden = !text
+    element.textContent = text
 }
 
 function closeCharacterPanel() {
@@ -130,6 +151,8 @@ function openCharacterPanel(char, triggerElement) {
     bigChar.textContent = char
     title.textContent = `“${char}”字释义`
     origin.textContent = info.origin
+    setOptionalCharacterPanelSection(panel, 'oracleBone', info.oracleBone)
+    setOptionalCharacterPanelSection(panel, 'bronzeScript', info.bronzeScript)
     originalMeaning.textContent = info.originalMeaning
     evolution.textContent = info.evolution
     panel.classList.add('active')
